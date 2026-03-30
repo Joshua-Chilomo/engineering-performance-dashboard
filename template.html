@@ -1244,18 +1244,20 @@ function renderTrendChart(canvasId, height, fullLabels) {
   const mb = document.getElementById('memberFilter').value;
   const pr = document.getElementById('projectFilter').value;
   const src = RAW.filter(r=>(mb==='all'||r.assignee_name===mb)&&(pr==='all'||r.project_key===pr));
-  // Start from Sprint 41 only
+  // X-axis: Sprint 41 to current active sprint only (no future sprints)
+  const activeSprint = SPRTS.find(s=>s.state==='active') ||
+                       [...SPRTS].filter(s=>s.state==='closed').sort((a,b)=>b.id-a.id)[0];
+  const activeSprintNum = activeSprint ? parseInt(activeSprint.name.replace(/\D/g,'')) : 9999;
   const sprintOrder = [...new Set(src.map(r=>r.sprint_name))]
     .sort((a,b)=>parseInt(a.replace(/\D/g,''))-parseInt(b.replace(/\D/g,'')))
-    .filter(sn=>parseInt(sn.replace(/\D/g,''))>=41);
-  // Active members = those with tasks in the most recent sprint (excludes leavers & Unassigned)
-  const latestSprint = sprintOrder[sprintOrder.length-1];
+    .filter(sn=>{ const n=parseInt(sn.replace(/\D/g,'')); return n>=41 && n<=activeSprintNum; });
+  // Active members = those with tasks in the current active sprint, excluding Unassigned
+  const activeSprintName = activeSprint ? activeSprint.name : '';
   const activeSet = new Set(
-    src.filter(r=>r.sprint_name===latestSprint && r.assignee_name!=='Unassigned')
+    RAW.filter(r=>r.sprint_name===activeSprintName && r.assignee_name!=='Unassigned')
        .map(r=>r.assignee_name)
   );
-  const members = [...new Set(src.map(r=>r.assignee_name))]
-    .filter(name=>activeSet.has(name)).sort();
+  const members = [...activeSet].sort();
   const datasets = members.map((name,i)=>{
     const color = COLORS[i%COLORS.length];
     return {
