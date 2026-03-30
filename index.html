@@ -6,30 +6,33 @@
   <title>Lupiya Engineering — Performance Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    /* ── Lupiya Design Tokens ── */
+    /* ── Lupiya Design Tokens — Brand Edition ── */
     :root {
-      --primary:        hsl(208,67%,30%);
-      --primary-light:  hsl(208,60%,40%);
-      --primary-dark:   hsl(208,75%,22%);
-      --accent:         hsl(198,77%,52%);
-      --success:        hsl(74,70%,36%);
-      --success-light:  hsl(74,65%,95%);
+      /* Lupiya Navy  (#1B3560) */
+      --primary:        hsl(217,56%,24%);
+      --primary-light:  hsl(217,48%,36%);
+      --primary-dark:   hsl(217,62%,16%);
+      /* Lupiya Green (#68AB3E) */
+      --accent:         hsl(96,47%,46%);
+      --accent-light:   hsl(96,50%,58%);
+      --success:        hsl(96,47%,38%);
+      --success-light:  hsl(96,65%,94%);
       --warning:        hsl(43,76%,49%);
       --warning-light:  hsl(43,70%,95%);
-      --danger:         hsl(6,100%,61%);
+      --danger:         hsl(6,85%,56%);
       --danger-light:   hsl(6,95%,95%);
-      --bg:             hsl(210,17%,98%);
-      --fg:             hsl(215,25%,15%);
+      --bg:             hsl(216,22%,97%);
+      --fg:             hsl(217,40%,13%);
       --card:           #ffffff;
-      --muted:          hsl(210,15%,95%);
-      --muted-fg:       hsl(215,15%,45%);
-      --border:         hsl(215,15%,88%);
-      --sidebar-bg:     hsl(215,30%,12%);
-      --sidebar-fg:     hsl(210,15%,85%);
-      --sidebar-active: hsl(198,77%,52%);
+      --muted:          hsl(216,18%,95%);
+      --muted-fg:       hsl(215,15%,44%);
+      --border:         hsl(215,14%,87%);
+      --sidebar-bg:     hsl(217,58%,15%);   /* Deep Lupiya Navy */
+      --sidebar-fg:     hsl(215,22%,80%);
+      --sidebar-active: hsl(96,52%,52%);    /* Lupiya Green highlight */
       --radius:         0.5rem;
-      --shadow-sm:      0 1px 3px rgba(0,0,0,.08);
-      --shadow-md:      0 4px 16px rgba(0,0,0,.10);
+      --shadow-sm:      0 1px 4px rgba(27,53,96,.08);
+      --shadow-md:      0 4px 20px rgba(27,53,96,.13);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -614,7 +617,110 @@
   }
   .login-error.show { display: block; }
 
-</style>
+
+    /* ══════════════════════════════════════════════════════════
+       LUPIYA BRAND ENHANCEMENTS — Animations & Rank Badges
+       ══════════════════════════════════════════════════════════ */
+
+    /* ── Page-load animations ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lbSlideIn {
+      from { opacity: 0; transform: translateX(-14px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes kpiPop {
+      0%   { opacity: 0; transform: scale(0.88) translateY(8px); }
+      60%  { transform: scale(1.04) translateY(0); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── Rank-move pulse glow ── */
+    @keyframes glowGreen {
+      0%   { box-shadow: 0 0 0 0 hsl(96,52%,52%,0.55); }
+      50%  { box-shadow: 0 0 0 10px hsl(96,52%,52%,0); }
+      100% { box-shadow: none; }
+    }
+    @keyframes glowRed {
+      0%   { box-shadow: 0 0 0 0 hsl(6,80%,56%,0.45); }
+      50%  { box-shadow: 0 0 0 10px hsl(6,80%,56%,0); }
+      100% { box-shadow: none; }
+    }
+
+    /* ── KPI cards ── */
+    .kpi-card {
+      animation: kpiPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .kpi-card:nth-child(1) { animation-delay: 0ms; }
+    .kpi-card:nth-child(2) { animation-delay: 75ms; }
+    .kpi-card:nth-child(3) { animation-delay: 150ms; }
+    .kpi-card:nth-child(4) { animation-delay: 225ms; }
+
+    /* ── Leaderboard rows ── */
+    .lb-row { animation: lbSlideIn 0.38s ease-out both; }
+    .lb-row:nth-child(1) { animation-delay:   0ms; }
+    .lb-row:nth-child(2) { animation-delay:  60ms; }
+    .lb-row:nth-child(3) { animation-delay: 120ms; }
+    .lb-row:nth-child(4) { animation-delay: 180ms; }
+    .lb-row:nth-child(5) { animation-delay: 240ms; }
+    .lb-row:nth-child(6) { animation-delay: 300ms; }
+    .lb-row:nth-child(7) { animation-delay: 360ms; }
+    .lb-row.moved-up   { animation: lbSlideIn 0.38s ease-out both, glowGreen 1.8s ease-out 0.42s; }
+    .lb-row.moved-down { animation: lbSlideIn 0.38s ease-out both, glowRed   1.8s ease-out 0.42s; }
+
+    /* ── Rank change badges ── */
+    .rank-badge {
+      display: inline-flex; align-items: center; gap: 2px;
+      font-size: 0.67rem; font-weight: 800;
+      padding: 1px 7px; border-radius: 99px;
+      margin-left: 5px; letter-spacing: 0.01em; vertical-align: middle;
+    }
+    .rank-badge-up   { background: hsl(96,55%,91%);  color: hsl(96,55%,26%);  }
+    .rank-badge-down { background: hsl(6,80%,93%);   color: hsl(6,80%,36%);   }
+    .rank-badge-same { background: hsl(215,14%,92%); color: hsl(215,14%,44%); }
+
+    /* ── Sidebar logo gradient strip ── */
+    .sidebar-logo {
+      background: linear-gradient(135deg, hsl(217,60%,18%) 0%, hsl(217,55%,22%) 60%, hsl(130,35%,22%) 100%);
+    }
+    .logo-text {
+      font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 0%, hsl(96,65%,82%) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Active nav gets green left border ── */
+    .nav-item.active { background: hsl(217,52%,22%); }
+
+    /* ── Login card polish ── */
+    #login-overlay { background: hsl(217,58%,12%); }
+    .login-card { border-top: 3px solid var(--accent); }
+    .login-btn  { background: linear-gradient(135deg, var(--primary) 0%, hsl(217,50%,34%) 100%); }
+    .login-btn:hover:not(:disabled) { background: linear-gradient(135deg, hsl(217,50%,30%) 0%, hsl(217,45%,40%) 100%); }
+
+    /* ── Topbar bottom border accent ── */
+    .topbar { border-bottom: 2px solid hsl(96,47%,46%,0.18); }
+
+    /* ── Bar-fill uses brand gradient ── */
+    .lb-bar-fill { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+
+    /* ── KPI card accent lines match brand ── */
+    .kpi-card.blue::before  { background: var(--primary); }
+    .kpi-card.green::before { background: var(--accent); }
+    .kpi-card.teal::before  { background: hsl(96,47%,56%); }
+    .kpi-card.amber::before { background: hsl(43,76%,49%); }
+
+    /* ── Refresh button uses brand green ── */
+    .refresh-btn-sidebar { background: var(--accent); }
+    .refresh-btn-sidebar:hover { background: var(--accent-light); }
+
+    /* ── Drawer header gradient ── */
+    .drawer-header { background: linear-gradient(135deg, var(--sidebar-bg) 0%, hsl(217,56%,22%) 100%); }
+
+  </style>
 </head>
 <body>
 
@@ -622,8 +728,17 @@
 <div id="login-overlay">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-text">⚡ Lupiya</div>
-      <div class="login-logo-sub">Engineering Dashboard</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+        <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="13" fill="#68AB3E"/>
+          <path d="M0 34 L34 0 L52 0 L52 14 L14 52 L0 52 Z" fill="#1B3560" opacity="0.2"/>
+          <line x1="8" y1="42" x2="42" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="login-logo-text">lupiya</div>
+          <div class="login-logo-sub">Engineering Dashboard</div>
+        </div>
+      </div>
     </div>
     <hr class="login-divider">
     <div class="login-title">Enter your password to continue</div>
@@ -643,8 +758,17 @@
 <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-text">⚡ Lupiya</div>
-    <div class="logo-sub">Engineering Dashboard</div>
+    <div style="display:flex;align-items:center;gap:0.7rem;padding-bottom:0.25rem;">
+      <svg viewBox="0 0 38 38" width="30" height="30" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <rect width="38" height="38" rx="9" fill="#68AB3E"/>
+        <path d="M0 25 L25 0 L38 0 L38 10 L10 38 L0 38 Z" fill="#1B3560" opacity="0.22"/>
+        <line x1="6" y1="30" x2="30" y2="8" stroke="rgba(255,255,255,0.38)" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="logo-text">lupiya</div>
+        <div class="logo-sub">Engineering</div>
+      </div>
+    </div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-label">Pages</div>
@@ -996,8 +1120,8 @@ const PTS_MAP = {
   'In Progress':1,'To Do':0
 };
 const COLORS = [
-  'hsl(208,67%,35%)','hsl(198,77%,45%)','hsl(74,60%,40%)',
-  'hsl(43,76%,45%)','hsl(270,60%,50%)','hsl(6,80%,55%)',
+  'hsl(217,56%,38%)','hsl(96,47%,44%)','hsl(43,76%,45%)',
+  'hsl(270,60%,50%)','hsl(6,80%,55%)','hsl(198,77%,45%)',
   'hsl(168,60%,38%)','hsl(25,80%,52%)'
 ];
 const PAGE_TITLES = {
@@ -1101,6 +1225,23 @@ function renderCurrentPage() {
 }
 
 // ─── KPIs (always computed, shown on overview) ────────────────────────
+// ── Animated counter helper ──────────────────────────────────────────
+function animateCount(el, target, suffix) {
+  if (!el) return;
+  const isText = isNaN(target);
+  if (isText) { el.textContent = target; return; }
+  const dur = 700;
+  const start = performance.now();
+  const from = 0;
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (target - from) * eased) + (suffix||'');
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 function renderKPIs() {
   const sp   = document.getElementById('sprintFilter').value;
   const pts  = filtered.reduce((s,r)=>s+r.points,0);
@@ -1109,11 +1250,13 @@ function renderKPIs() {
   const byM  = {};
   filtered.forEach(r=>{ byM[r.assignee_name]=(byM[r.assignee_name]||0)+r.points; });
   const top  = Object.entries(byM).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('kpiPts').textContent     = pts;
+
+  animateCount(document.getElementById('kpiPts'),    pts);
+  animateCount(document.getElementById('kpiDone'),   done);
+  animateCount(document.getElementById('kpiReview'), rev);
+
   document.getElementById('kpiPtsSub').textContent  = filtered.length+' tasks · '+Object.keys(byM).length+' members';
-  document.getElementById('kpiDone').textContent    = done;
   document.getElementById('kpiDoneSub').textContent = done+' of '+filtered.length+' finished';
-  document.getElementById('kpiReview').textContent  = rev;
   document.getElementById('kpiTop').textContent     = top ? top[0].split(' ')[0] : '—';
   document.getElementById('kpiTopPts').textContent  = top ? top[1]+' pts earned' : '';
 }
@@ -1147,12 +1290,21 @@ function renderOverviewLeaderboard() {
   grid.innerHTML = '';
   if (!ranked.length) { grid.innerHTML='<div class="empty">No data.</div>'; return; }
 
+  // Save rankings for next-session rank-change tracking
+  saveLbRankings(sp, ranked.map(m=>m.name));
+
   ranked.forEach((m, i) => {
-    const total = m.done+m.rev+m.prog+m.todo;
-    const pct   = total > 0 ? Math.round(m.done/total*100) : 0;
-    const medal = i<3 ? medals[i] : `<span style="font-size:.72rem;color:var(--muted-fg);font-weight:800;min-width:1.4rem;text-align:center;display:inline-block">#${i+1}</span>`;
+    const total      = m.done+m.rev+m.prog+m.todo;
+    const pct        = total > 0 ? Math.round(m.done/total*100) : 0;
+    const medal      = i<3 ? medals[i] : `<span style="font-size:.72rem;color:var(--muted-fg);font-weight:800;min-width:1.4rem;text-align:center;display:inline-block">#${i+1}</span>`;
+    const rankChange = getLbRankChange(sp, m.name, i);
+    const rankBadge  = buildRankBadge(rankChange);
+
     const row = document.createElement('div');
-    row.style.cssText = 'display:grid;grid-template-columns:1.8rem 1fr auto;gap:0.6rem;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border);cursor:pointer;border-radius:6px;transition:background .12s;';
+    const moveClass = rankChange > 0 ? ' moved-up' : rankChange < 0 ? ' moved-down' : '';
+    row.className = 'ovr-lb-row' + moveClass;
+    row.style.cssText = 'display:grid;grid-template-columns:1.8rem 1fr auto;gap:0.6rem;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border);cursor:pointer;border-radius:6px;transition:background .12s;animation:lbSlideIn 0.38s ease-out both;';
+    row.style.animationDelay = (i * 55) + 'ms';
     if (i === ranked.length-1) row.style.borderBottom = 'none';
     row.title = 'Click to view ' + m.name + "'s tasks";
     row.addEventListener('mouseenter', ()=>{ row.style.background='var(--muted)'; });
@@ -1161,8 +1313,8 @@ function renderOverviewLeaderboard() {
     row.innerHTML = `
       <div style="font-size:1.1rem;text-align:center">${medal}</div>
       <div>
-        <div style="font-size:0.82rem;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:0.35rem;">
-          ${m.name}<span style="font-size:0.62rem;color:var(--accent);font-weight:500">↗ view tasks</span>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">
+          ${m.name}${rankBadge}<span style="font-size:0.62rem;color:var(--accent);font-weight:500">↗ view tasks</span>
         </div>
         <div style="margin-top:3px;display:flex;align-items:center;gap:0.4rem;">
           <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden;">
@@ -1218,8 +1370,8 @@ function renderBarChart(canvasId, height, fullLabels) {
     data:{
       labels: displayLabels,
       datasets:[
-        {label:'Done (3pts)',  data:labels.map(l=>map[l].done),  backgroundColor:'hsl(74,60%,45%)',  borderRadius:5},
-        {label:'Review (2pts)',data:labels.map(l=>map[l].rev),   backgroundColor:'hsl(208,67%,45%)', borderRadius:5},
+        {label:'Done (3pts)',  data:labels.map(l=>map[l].done),  backgroundColor:'hsl(96,47%,42%)',  borderRadius:5},
+        {label:'Review (2pts)',data:labels.map(l=>map[l].rev),   backgroundColor:'hsl(217,56%,38%)', borderRadius:5},
         {label:'In Prog (1pt)',data:labels.map(l=>map[l].prog),  backgroundColor:'hsl(43,76%,52%)',  borderRadius:5},
       ]
     },
@@ -1287,6 +1439,37 @@ function renderTrendChart(canvasId, height, fullLabels) {
   });
 }
 
+// ─── Rank tracking (for post-refresh animations) ─────────────────────
+const LB_RANK_KEY = 'lupiya_lb_ranks_v2';
+
+function saveLbRankings(sprintKey, rankedNames) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    // Keep previous as 'prev', save current as new 'curr'
+    if (store[sprintKey]?.curr) store[sprintKey].prev = store[sprintKey].curr;
+    if (!store[sprintKey]) store[sprintKey] = {};
+    store[sprintKey].curr = rankedNames;
+    localStorage.setItem(LB_RANK_KEY, JSON.stringify(store));
+  } catch(e) {}
+}
+
+function getLbRankChange(sprintKey, memberName, currentRank) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    const prev = store[sprintKey]?.prev;
+    if (!prev) return 0;
+    const prevRank = prev.indexOf(memberName);
+    if (prevRank === -1) return 0;
+    return prevRank - currentRank; // positive = moved UP (was lower rank before)
+  } catch(e) { return 0; }
+}
+
+function buildRankBadge(change) {
+  if (change > 0)  return `<span class="rank-badge rank-badge-up">▲ ${change}</span>`;
+  if (change < 0)  return `<span class="rank-badge rank-badge-down">▼ ${Math.abs(change)}</span>`;
+  return '';
+}
+
 // ─── Leaderboard (shared — called by both overview and leaderboard page) ──
 function renderLeaderboardPage() { renderLeaderboard('lbPageGrid','lbPageBadge'); }
 
@@ -1310,23 +1493,37 @@ function renderLeaderboard(gridId, badgeId) {
   if (!grid) return;
   grid.innerHTML = '';
   if (!ranked.length) { grid.innerHTML='<div class="empty">No data for this selection.</div>'; return; }
+
+  // Save rankings for next-session rank-change tracking
+  saveLbRankings(sp, ranked.map(m=>m.name));
+
   ranked.forEach((m,i) => {
     const total = m.done+m.rev+m.prog+m.todo;
     const pct   = total > 0 ? Math.round(m.done/total*100) : 0;
     const medal = i<3 ? medals[i] : `<span style="font-size:.85rem;color:var(--muted-fg);font-weight:800">#${i+1}</span>`;
+    const rankChange = getLbRankChange(sp, m.name, i);
+    const rankBadge  = buildRankBadge(rankChange);
+
     const row = document.createElement('div');
-    row.className = 'lb-row' + (i<3?' rank-'+(i+1):'');
+    let rowClass = 'lb-row' + (i<3?' rank-'+(i+1):'');
+    if (rankChange > 0) rowClass += ' moved-up';
+    else if (rankChange < 0) rowClass += ' moved-down';
+    row.className = rowClass;
     row.style.cursor = 'pointer';
     row.title = 'Click to view ' + m.name + "'s tasks by project";
     row.addEventListener('click', ()=>openDrawer(m.name));
     row.innerHTML = `
       <div class="lb-rank">${medal}</div>
       <div>
-        <div class="lb-name" style="display:flex;align-items:center;gap:0.4rem;">
-          ${m.name}<span style="font-size:0.65rem;color:var(--accent);font-weight:500">↗ view tasks</span>
+        <div class="lb-name" style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+          ${m.name}${rankBadge}<span style="font-size:0.65rem;color:var(--accent);font-weight:500;margin-left:2px">↗ view tasks</span>
         </div>
         <div class="lb-badges">
-          ${m.done ?`<span class="badge badge-done">${m.done} done</span>`:''}          ${m.rev  ?`<span class="badge badge-review">${m.rev} in review</span>`:''}          ${m.prog ?`<span class="badge badge-progress">${m.prog} in progress</span>`:''}          ${m.todo ?`<span class="badge badge-todo">${m.todo} to do</span>`:''}        </div>
+          ${m.done ?`<span class="badge badge-done">${m.done} done</span>`:''}
+          ${m.rev  ?`<span class="badge badge-review">${m.rev} in review</span>`:''}
+          ${m.prog ?`<span class="badge badge-progress">${m.prog} in progress</span>`:''}
+          ${m.todo ?`<span class="badge badge-todo">${m.todo} to do</span>`:''}
+        </div>
       </div>
       <div class="lb-right">
         <div class="lb-pts">${m.pts}<span class="lb-pts-lbl"> pts</span></div>
