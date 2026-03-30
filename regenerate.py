@@ -60,26 +60,30 @@ def inject_data(records, assignees, sprints):
     sprint_list = sorted(seen.values(), key=lambda s: s["id"])
 
     # Replace embedded data
+    _raw_json = json.dumps(records)
     html = re.sub(
         r'const RAW\s*=\s*\[.*?\];',
-        f'const RAW   = {json.dumps(records)};',
+        lambda _: f'const RAW   = {_raw_json};',
         html, flags=re.DOTALL
     )
+    _asgn_json = json.dumps(assignees)
     html = re.sub(
         r'const ASGN\s*=\s*\{.*?\};',
-        f'const ASGN  = {json.dumps(assignees)};',
+        lambda _: f'const ASGN  = {_asgn_json};',
         html, flags=re.DOTALL
     )
+    _sprts_json = json.dumps(sprint_list)
     html = re.sub(
         r'const SPRTS\s*=\s*\[.*?\];',
-        f'const SPRTS = {json.dumps(sprint_list)};',
+        lambda _: f'const SPRTS = {_sprts_json};',
         html, flags=re.DOTALL
     )
 
     # Replace generation timestamp
+    _gen_time = gen_time
     html = re.sub(
         r'Last generated:.*?</div>',
-        f'Last generated: {gen_time}</div>',
+        lambda _: f'Last generated: {_gen_time}</div>',
         html
     )
 
