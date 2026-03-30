@@ -566,9 +566,77 @@
     .team-task-key2 { color:var(--primary); font-weight:700; font-size:.7rem; }
     .team-task-due  { font-size:.65rem; color:var(--muted-fg); white-space:nowrap; }
     .team-no-commits { text-align:center; padding:1rem; color:var(--muted-fg); font-size:.78rem; }
-  </style>
+  
+  /* ── Login Overlay ───────────────────────────────────── */
+  #login-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: var(--sidebar-bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #login-overlay.hidden { display: none; }
+  .login-card {
+    background: var(--card); border-radius: 14px; padding: 2.5rem 2rem;
+    width: 100%; max-width: 360px; box-shadow: 0 8px 40px rgba(0,0,0,.35);
+    display: flex; flex-direction: column; gap: 1.4rem;
+  }
+  .login-logo { text-align: center; }
+  .login-logo-text { font-size: 1.6rem; font-weight: 800; color: var(--fg); letter-spacing: -0.03em; }
+  .login-logo-sub  { font-size: 0.68rem; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+  .login-divider   { border: none; border-top: 1px solid var(--border); margin: 0; }
+  .login-title     { font-size: 0.95rem; font-weight: 600; color: var(--fg); text-align: center; }
+  .login-field     { display: flex; flex-direction: column; gap: 0.35rem; }
+  .login-label     { font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+                     letter-spacing: 0.07em; color: var(--muted-fg); }
+  .login-input {
+    border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 0.65rem 0.85rem; font-size: 0.88rem; color: var(--fg);
+    width: 100%; transition: border-color 0.15s; background: var(--card);
+  }
+  .login-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px hsl(208,67%,30%,.12); }
+  .login-input.error { border-color: var(--danger); animation: shake .3s; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+  }
+  .login-btn {
+    background: var(--primary); color: #fff;
+    border: none; border-radius: var(--radius);
+    padding: 0.72rem; font-size: 0.88rem; font-weight: 700;
+    cursor: pointer; width: 100%; transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .login-btn:hover:not(:disabled)  { background: var(--primary-light); }
+  .login-btn:active:not(:disabled) { transform: scale(0.98); }
+  .login-btn:disabled { background: var(--muted); color: var(--muted-fg); cursor: not-allowed; }
+  .login-error {
+    font-size: 0.75rem; color: var(--danger); text-align: center;
+    display: none; background: var(--danger-light); padding: 0.45rem 0.75rem;
+    border-radius: var(--radius); font-weight: 500;
+  }
+  .login-error.show { display: block; }
+
+</style>
 </head>
 <body>
+
+<!-- ═══ LOGIN OVERLAY ══════════════════════════════════════════════ -->
+<div id="login-overlay">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-text">⚡ Lupiya</div>
+      <div class="login-logo-sub">Engineering Dashboard</div>
+    </div>
+    <hr class="login-divider">
+    <div class="login-title">Enter your password to continue</div>
+    <div class="login-field">
+      <label class="login-label" for="login-pw">Password</label>
+      <input class="login-input" type="password" id="login-pw"
+             placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <div class="login-error" id="login-err">Incorrect password — please try again.</div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+
 
 <div class="toast" id="toast"></div>
 
@@ -1757,6 +1825,48 @@ function showToast(msg, type='', duration=3500) {
   t.textContent = msg; t.className = 'toast show'+(type?' '+type:'');
   setTimeout(()=>t.classList.remove('show'), duration);
 }
+</script>
+<script>
+
+// ── Login / Auth ──────────────────────────────────────────────────
+const PASSWORD_HASH = "5bbbbc616ddae1d4e56828512ab30bd9767bb992b99fe3508825ba674be4534a";
+
+async function sha256hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function doLogin() {
+  const pw  = document.getElementById('login-pw').value;
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-err');
+  const inp = document.getElementById('login-pw');
+  if (!pw) { inp.focus(); return; }
+  btn.disabled = true; btn.textContent = 'Checking…';
+  err.classList.remove('show'); inp.classList.remove('error');
+  const hash = await sha256hex(pw);
+  if (hash === PASSWORD_HASH) {
+    sessionStorage.setItem('lupiya_dash_auth', '1');
+    document.getElementById('login-overlay').classList.add('hidden');
+    btn.textContent = 'Sign In →'; btn.disabled = false;
+  } else {
+    inp.classList.add('error'); err.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Sign In →';
+    inp.value = ''; inp.focus();
+  }
+}
+
+document.getElementById('login-pw').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+(function checkAuth() {
+  if (!PASSWORD_HASH) { document.getElementById('login-overlay').classList.add('hidden'); return; }
+  if (sessionStorage.getItem('lupiya_dash_auth') === '1') {
+    document.getElementById('login-overlay').classList.add('hidden');
+  }
+})();
+
 </script>
 </body>
 </html>
