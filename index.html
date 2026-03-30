@@ -1244,9 +1244,18 @@ function renderTrendChart(canvasId, height, fullLabels) {
   const mb = document.getElementById('memberFilter').value;
   const pr = document.getElementById('projectFilter').value;
   const src = RAW.filter(r=>(mb==='all'||r.assignee_name===mb)&&(pr==='all'||r.project_key===pr));
+  // Start from Sprint 41 only
   const sprintOrder = [...new Set(src.map(r=>r.sprint_name))]
-    .sort((a,b)=>parseInt(a.replace(/\D/g,''))-parseInt(b.replace(/\D/g,'')));
-  const members = [...new Set(src.map(r=>r.assignee_name))].sort();
+    .sort((a,b)=>parseInt(a.replace(/\D/g,''))-parseInt(b.replace(/\D/g,'')))
+    .filter(sn=>parseInt(sn.replace(/\D/g,''))>=41);
+  // Active members = those with tasks in the most recent sprint (excludes leavers & Unassigned)
+  const latestSprint = sprintOrder[sprintOrder.length-1];
+  const activeSet = new Set(
+    src.filter(r=>r.sprint_name===latestSprint && r.assignee_name!=='Unassigned')
+       .map(r=>r.assignee_name)
+  );
+  const members = [...new Set(src.map(r=>r.assignee_name))]
+    .filter(name=>activeSet.has(name)).sort();
   const datasets = members.map((name,i)=>{
     const color = COLORS[i%COLORS.length];
     return {
