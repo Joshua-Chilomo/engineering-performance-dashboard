@@ -1140,6 +1140,9 @@ let charts = {};
 
 // ─── Init ────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  // Recalculate points from PTS_MAP so leaderboard reflects updated scoring
+  // (RAW points are pre-computed at Jira fetch time with the old values)
+  RAW.forEach(r => { r.points = PTS_MAP[r.status] ?? 0; });
   // Sprint
   const ss = document.getElementById('sprintFilter');
   [...SPRTS].sort((a,b)=>a.id-b.id).forEach(s => {
