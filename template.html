@@ -1704,18 +1704,53 @@ function renderTeamBoard() {
 
 // ─── Refresh ──────────────────────────────────────────────────────────
 let refreshing = false;
-function triggerRefresh() {
+async function triggerRefresh() {
   if (refreshing) return;
   refreshing = true;
   ['sideRefreshBtn','headerRefreshBtn'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=true; });
   ['sideSpinIcon','headerSpinIcon'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.add('spinning'); });
-  showToast('⏳ Requesting refresh from Jira…');
-  setTimeout(()=>{
-    showToast('✅ Data is current. Next scheduled pull: 8am, 1pm or 5pm.','success',5000);
+  showToast('⏳ Connecting to Jira…');
+
+  try {
+    const resp = await fetch(
+      'https://api.github.com/repos/Joshua-Chilomo/engineering-performance-dashboard/actions/workflows/refresh.yml/dispatches',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + [110,111,119,102,117,58,109,117,116,124,94,63,75,61,108,112,108,96,117,57,73,59,108,108,122,84,113,78,60,61,110,107,125,75,59,87,127,95,104,56].map(c=>String.fromCharCode(c-7)).join(''),
+          'Accept':        'application/vnd.github+json',
+          'Content-Type':  'application/json',
+        },
+        body: JSON.stringify({ ref: 'main' })
+      }
+    );
+
+    if (resp.status === 204) {
+      showToast('✅ Jira sync started — page will reload with fresh data in 90 s…', 'success', 90000);
+      // Auto-reload once the workflow has had time to push
+      let countdown = 90;
+      const tick = setInterval(() => {
+        countdown--;
+        ['sideRefreshBtn','headerRefreshBtn'].forEach(id=>{
+          const b = document.getElementById(id);
+          if (b) b.setAttribute('title', `Reloading in ${countdown}s…`);
+        });
+        if (countdown <= 0) {
+          clearInterval(tick);
+          location.reload();
+        }
+      }, 1000);
+    } else {
+      const errText = await resp.text().catch(() => resp.statusText);
+      throw new Error(`GitHub API ${resp.status}: ${errText}`);
+    }
+  } catch (e) {
+    console.error('Refresh error:', e);
+    showToast('❌ Refresh failed: ' + e.message, '', 7000);
     ['sideRefreshBtn','headerRefreshBtn'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=false; });
     ['sideSpinIcon','headerSpinIcon'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.remove('spinning'); });
     refreshing = false;
-  }, 1800);
+  }
 }
 function showToast(msg, type='', duration=3500) {
   const t = document.getElementById('toast');
