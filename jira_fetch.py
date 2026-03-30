@@ -66,7 +66,7 @@ def search_jira(jql: str, fields: list[str], max_total: int = 2000) -> list:
     while True:
         encoded_jql = urllib.parse.quote(jql)
         path = (
-            f"search?jql={encoded_jql}"
+            f"search/jql?jql={encoded_jql}"
             f"&fields={encoded_fields}"
             f"&startAt={start_at}"
             f"&maxResults={page_size}"
