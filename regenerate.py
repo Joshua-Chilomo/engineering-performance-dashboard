@@ -13,7 +13,9 @@ Credentials:
   Reads Jira credentials from the active MCP session (Claude scheduled task).
 """
 
+import hashlib
 import json
+import os
 import re
 import subprocess
 import shutil
@@ -86,6 +88,13 @@ def inject_data(records, assignees, sprints):
         lambda _: f'Last generated: {_gen_time}</div>',
         html
     )
+
+
+    # Inject password hash from env var
+    import hashlib as _hl, os as _os
+    _raw_pw   = _os.environ.get("DASHBOARD_PASSWORD", "")
+    _pw_hash  = _hl.sha256(_raw_pw.encode()).hexdigest() if _raw_pw else ""
+    html = html.replace('"PLACEHOLDER_HASH"', f'"{_pw_hash}"')
 
     OUTPUT_FILE.write_text(html, encoding="utf-8")
     log(f"index.html rebuilt: {len(html):,} bytes")
