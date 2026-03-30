@@ -280,6 +280,7 @@
     .issue-link { color:var(--primary); text-decoration:none; font-weight:600; font-size:0.72rem; }
     .issue-link:hover { text-decoration:underline; color:var(--accent); }
     .pts-cell { font-weight:700; }
+    .pts-4 { color:hsl(96,65%,28%); font-weight:900; }
     .pts-3 { color:hsl(74,70%,30%); }
     .pts-2 { color:var(--primary); }
     .pts-1 { color:hsl(43,76%,38%); }
@@ -781,7 +782,8 @@
 
     <div class="nav-label" style="margin-top:1rem;">Point System</div>
     <div class="pts-legend">
-      ✅ Done = <strong style="color:hsl(120,60%,65%)">3 pts</strong><br>
+      ✅ Done = <strong style="color:hsl(120,60%,65%)">4 pts</strong><br>
+      🚀 Pending Deploy = <strong style="color:hsl(96,50%,65%)">3 pts</strong><br>
       🔬 QA / Review = <strong style="color:var(--accent)">2 pts</strong><br>
       🔄 In Progress = <strong style="color:hsl(43,80%,65%)">1 pt</strong><br>
       📥 To Do = <strong style="color:hsl(215,15%,55%)">0 pts</strong>
@@ -877,7 +879,8 @@
             <span class="section-badge" id="overviewLbBadge">—</span>
           </div>
           <div style="padding:0.4rem 1.25rem;background:var(--muted);border-bottom:1px solid var(--border);font-size:0.67rem;color:var(--muted-fg);display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
-            <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done=3pts</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done=4pts</span>
+            <span class="legend-item"><span class="legend-dot" style="background:hsl(96,52%,52%)"></span>Pending=3pts</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>QA=2pts</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>In Progress=1pt</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--border)"></span>To Do=0pts</span>
@@ -923,7 +926,8 @@
       <div class="pt-legend-bar">
         <strong style="color:var(--fg)">Progress bar = tasks done ÷ total assigned</strong>
         &nbsp;·&nbsp;
-        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done = 3 pts</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done = 4 pts</span>
+        <span class="legend-item"><span class="legend-dot" style="background:hsl(96,52%,52%)"></span>Pending Deploy = 3 pts</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>QA/Review = 2 pts</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>In Progress = 1 pt</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--border)"></span>To Do = 0 pts</span>
@@ -1115,8 +1119,8 @@ const ASGN  = {"712020:4f688e6f-782d-48e9-a811-b231a9a10dd1": "Ian Juma", "71202
 const SPRTS = [{"id": 9, "name": "Platform Merging", "state": "closed"}, {"id": 30, "name": "Platform Merging 2", "state": "closed"}, {"id": 33, "name": "Platform Merging 3", "state": "closed"}, {"id": 56, "name": "Sprint 20", "state": "closed"}, {"id": 65, "name": "Sprint", "state": "closed"}, {"id": 72, "name": "LWA Sprint 10", "state": "closed"}, {"id": 78, "name": "Sprint 28", "state": "closed"}, {"id": 96, "name": "P2P Sprint 33", "state": "closed"}, {"id": 98, "name": "LWA Sprint 12", "state": "closed"}, {"id": 99, "name": "P2P Sprint 34", "state": "closed"}, {"id": 106, "name": "p2p 02-2024", "state": "closed"}, {"id": 111, "name": "Mobile 03-2024", "state": "closed"}, {"id": 115, "name": "p2p 04-2024", "state": "closed"}, {"id": 118, "name": "Website 04-24", "state": "closed"}, {"id": 120, "name": "p2p 05-2024", "state": "closed"}, {"id": 124, "name": "p2p 06-2024", "state": "closed"}, {"id": 130, "name": "p2p 08-2024", "state": "closed"}, {"id": 132, "name": "Website 08-2024", "state": "closed"}, {"id": 135, "name": "Website 09-2024", "state": "closed"}, {"id": 136, "name": "Website 10-2024", "state": "closed"}, {"id": 137, "name": "p2p 09-2024", "state": "closed"}, {"id": 139, "name": "Mobile 10 - 2024", "state": "closed"}, {"id": 141, "name": "p2p 10-2024", "state": "closed"}, {"id": 144, "name": "Refined Backlog", "state": "closed"}, {"id": 147, "name": "Website 11 - 2024", "state": "closed"}, {"id": 152, "name": "Wallet 14 - 24", "state": "closed"}, {"id": 154, "name": "Website 14 - 24", "state": "closed"}, {"id": 157, "name": "Website 16 - 24", "state": "closed"}, {"id": 158, "name": "P2P - 16 - 24", "state": "closed"}, {"id": 161, "name": "P2P - 17 - 24", "state": "closed"}, {"id": 162, "name": "Website 17 - 24", "state": "closed"}, {"id": 163, "name": "Sprint 18 - 2024", "state": "closed"}, {"id": 165, "name": "Website 18 - 24", "state": "closed"}, {"id": 166, "name": "P2P 18 - 2024", "state": "closed"}, {"id": 168, "name": "Website 22 - 2024", "state": "closed"}, {"id": 169, "name": "P2P 19 - 2024", "state": "closed"}, {"id": 172, "name": "Website 19 - 24", "state": "closed"}, {"id": 174, "name": "Website 20-2024", "state": "closed"}, {"id": 183, "name": "P2P 22 - 2024", "state": "closed"}, {"id": 184, "name": "Wallet 22 - 2024", "state": "closed"}, {"id": 185, "name": "Wallet 23 - 2024", "state": "closed"}, {"id": 187, "name": "P2P 23 - 2024", "state": "closed"}, {"id": 188, "name": "Sprint 24", "state": "closed"}, {"id": 197, "name": "Sprint 25", "state": "closed"}, {"id": 202, "name": "Sprint 26", "state": "closed"}, {"id": 207, "name": "Sprint 27", "state": "closed"}, {"id": 214, "name": "Sprint 29", "state": "closed"}, {"id": 247, "name": "Sprint 30", "state": "closed"}, {"id": 277, "name": "Sprint 31", "state": "closed"}, {"id": 344, "name": "Sprint 33", "state": "closed"}, {"id": 575, "name": "Sprint 36", "state": "closed"}, {"id": 1070, "name": "Sprint 42", "state": "closed"}, {"id": 1136, "name": "Sprint 43", "state": "closed"}, {"id": 1267, "name": "Sprint 44", "state": "closed"}, {"id": 1368, "name": "Sprint 45", "state": "closed"}, {"id": 1432, "name": "Sprint 46", "state": "closed"}, {"id": 1498, "name": "Sprint 47", "state": "closed"}, {"id": 1533, "name": "Sprint 48", "state": "closed"}, {"id": 1568, "name": "Sprint 49", "state": "closed"}, {"id": 1603, "name": "Sprint 50", "state": "closed"}, {"id": 1673, "name": "Sprint 51", "state": "closed"}, {"id": 1712, "name": "Sprint 53", "state": "closed"}, {"id": 1713, "name": "Sprint 52", "state": "closed"}, {"id": 1751, "name": "Sprint 54", "state": "closed"}, {"id": 1788, "name": "Sprint 55", "state": "closed"}, {"id": 1824, "name": "Sprint 56", "state": "closed"}, {"id": 1861, "name": "Sprint 57", "state": "active"}];
 
 const PTS_MAP = {
-  'Done':3,'Done / Prod Deployed':3,
-  'QA / TestFlight / Review':2,'QA / review':2,'pending deployment':2,
+  'Done':4,'Done / Prod Deployed':4,
+  'QA / TestFlight / Review':2,'QA / review':2,'pending deployment':3,
   'In Progress':1,'To Do':0
 };
 const COLORS = [
@@ -1353,13 +1357,14 @@ function renderTrendPage() {
 function renderBarChart(canvasId, height, fullLabels) {
   const map = {};
   filtered.forEach(r => {
-    if (!map[r.assignee_name]) map[r.assignee_name]={done:0,rev:0,prog:0};
-    if (r.status==='Done'||r.status==='Done / Prod Deployed') map[r.assignee_name].done+=3;
-    else if (r.status.includes('QA')||r.status.includes('Review')||r.status==='pending deployment') map[r.assignee_name].rev+=2;
+    if (!map[r.assignee_name]) map[r.assignee_name]={done:0,deploy:0,rev:0,prog:0};
+    if (r.status==='Done'||r.status==='Done / Prod Deployed') map[r.assignee_name].done+=4;
+    else if (r.status==='pending deployment') map[r.assignee_name].deploy+=3;
+    else if (r.status.includes('QA')||r.status.includes('Review')) map[r.assignee_name].rev+=2;
     else if (r.status==='In Progress') map[r.assignee_name].prog+=1;
   });
   const labels = Object.keys(map).sort((a,b)=>
-    (map[b].done+map[b].rev+map[b].prog)-(map[a].done+map[a].rev+map[a].prog));
+    (map[b].done+map[b].deploy+map[b].rev+map[b].prog)-(map[a].done+map[a].deploy+map[a].rev+map[a].prog));
   const displayLabels = fullLabels ? labels : labels.map(l=>l.split(' ')[0]);
   if (charts[canvasId]) charts[canvasId].destroy();
   const ctx = document.getElementById(canvasId)?.getContext('2d');
@@ -1370,9 +1375,10 @@ function renderBarChart(canvasId, height, fullLabels) {
     data:{
       labels: displayLabels,
       datasets:[
-        {label:'Done (3pts)',  data:labels.map(l=>map[l].done),  backgroundColor:'hsl(96,47%,42%)',  borderRadius:5},
-        {label:'Review (2pts)',data:labels.map(l=>map[l].rev),   backgroundColor:'hsl(217,56%,38%)', borderRadius:5},
-        {label:'In Prog (1pt)',data:labels.map(l=>map[l].prog),  backgroundColor:'hsl(43,76%,52%)',  borderRadius:5},
+        {label:'Done (4pts)',    data:labels.map(l=>map[l].done),   backgroundColor:'hsl(96,47%,42%)',  borderRadius:5},
+        {label:'Pending (3pts)', data:labels.map(l=>map[l].deploy), backgroundColor:'hsl(96,52%,58%)',  borderRadius:5},
+        {label:'Review (2pts)',  data:labels.map(l=>map[l].rev),    backgroundColor:'hsl(217,56%,38%)', borderRadius:5},
+        {label:'In Prog (1pt)', data:labels.map(l=>map[l].prog),   backgroundColor:'hsl(43,76%,52%)',  borderRadius:5},
       ]
     },
     options:{
