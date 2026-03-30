@@ -1,0 +1,30 @@
+name: Refresh Dashboard from Jira
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'   # 08:00 CAT
+    - cron: '0 11 * * *'  # 13:00 CAT
+    - cron: '0 15 * * *'  # 17:00 CAT
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch Jira data & rebuild dashboard
+        env:
+          JIRA_EMAIL:     ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: python jira_fetch.py
+      - name: Commit & push updated index.html
+        run: |
+          git config user.name  "Joshua Chilomo"
+          git config user.email "joshua.chilomo@lupiya.com"
+          git add index.html
+          git diff --cached --quiet && echo "No changes." && exit 0
+          git commit -m "Auto-refresh: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
