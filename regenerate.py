@@ -31,8 +31,8 @@ CONFIG_FILE   = Path("/sessions/wizardly-serene-bell/mnt/Lupiya Projects Workspa
 
 PROJECTS = ["LW", "LWA", "MIS", "P2P", "MDE", "AP", "SP"]
 STATUS_POINTS = {
-    "Done": 3, "Done / Prod Deployed": 3,
-    "QA / TestFlight / Review": 2, "QA / review": 2, "pending deployment": 2,
+    "Done": 4, "Done / Prod Deployed": 4,
+    "QA / TestFlight / Review": 2, "QA / review": 2, "pending deployment": 3,
     "In Progress": 1, "To Do": 0,
 }
 
