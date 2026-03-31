@@ -8,10 +8,10 @@
   <style>
     /* ── Lupiya Design Tokens ── */
     :root {
-      --primary:        hsl(208,67%,30%);
+      --primary:        hsl(217,56%,24%); /* Lupiya Navy */
       --primary-light:  hsl(208,60%,40%);
       --primary-dark:   hsl(208,75%,22%);
-      --accent:         hsl(198,77%,52%);
+      --accent:         hsl(96,47%,46%); /* Lupiya Green */
       --success:        hsl(74,70%,36%);
       --success-light:  hsl(74,65%,95%);
       --warning:        hsl(43,76%,49%);
@@ -619,7 +619,60 @@
   }
   .login-error.show { display: block; }
 
-</style>
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lbSlideIn {
+      from { opacity: 0; transform: translateX(-14px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes kpiPop {
+      0%   { opacity: 0; transform: scale(0.88) translateY(8px); }
+      60%  { transform: scale(1.04) translateY(0); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes glowGreen {
+      0%   { box-shadow: 0 0 0 0 hsl(96,52%,52%,0.55); }
+      50%  { box-shadow: 0 0 0 10px hsl(96,52%,52%,0); }
+      100% { box-shadow: none; }
+    }
+    @keyframes glowRed {
+      0%   { box-shadow: 0 0 0 0 hsl(6,80%,56%,0.45); }
+      50%  { box-shadow: 0 0 0 10px hsl(6,80%,56%,0); }
+      100% { box-shadow: none; }
+    }
+    .kpi-card { animation: kpiPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .kpi-card:nth-child(1) { animation-delay:   0ms; }
+    .kpi-card:nth-child(2) { animation-delay:  75ms; }
+    .kpi-card:nth-child(3) { animation-delay: 150ms; }
+    .kpi-card:nth-child(4) { animation-delay: 225ms; }
+    .lb-row { animation: lbSlideIn 0.38s ease-out both; }
+    .lb-row:nth-child(1) { animation-delay:   0ms; }
+    .lb-row:nth-child(2) { animation-delay:  60ms; }
+    .lb-row:nth-child(3) { animation-delay: 120ms; }
+    .lb-row:nth-child(4) { animation-delay: 180ms; }
+    .lb-row:nth-child(5) { animation-delay: 240ms; }
+    .lb-row:nth-child(6) { animation-delay: 300ms; }
+    .lb-row:nth-child(7) { animation-delay: 360ms; }
+    .lb-row.moved-up   { animation: lbSlideIn 0.38s ease-out both, glowGreen 1.8s ease-out 0.42s; }
+    .lb-row.moved-down { animation: lbSlideIn 0.38s ease-out both, glowRed   1.8s ease-out 0.42s; }
+    .rank-badge {
+      display: inline-flex; align-items: center; gap: 2px;
+      font-size: 0.67rem; font-weight: 800; padding: 1px 7px;
+      border-radius: 99px; margin-left: 5px; letter-spacing: 0.01em; vertical-align: middle;
+    }
+    .rank-badge-up   { background: hsl(96,55%,91%);  color: hsl(96,55%,26%); }
+    .rank-badge-down { background: hsl(6,80%,93%);   color: hsl(6,80%,36%); }
+    .nav-item.active { background: hsl(217,52%,22%); }
+    #login-overlay { background: hsl(217,58%,12%); }
+    .login-card    { border-top: 3px solid var(--accent); }
+    .login-btn     { background: linear-gradient(135deg, var(--primary) 0%, hsl(217,50%,34%) 100%); }
+    .login-btn:hover:not(:disabled) { background: linear-gradient(135deg, hsl(217,50%,30%) 0%, hsl(217,45%,40%) 100%); }
+    .page { animation: fadeInUp 0.32s ease-out both; }
+
+  </style>
 </head>
 <body>
 
@@ -627,8 +680,17 @@
 <div id="login-overlay">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-text">⚡ Lupiya</div>
-      <div class="login-logo-sub">Engineering Dashboard</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+        <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="13" fill="#68AB3E"/>
+          <path d="M0 34 L34 0 L52 0 L52 14 L14 52 L0 52 Z" fill="#1B3560" opacity="0.2"/>
+          <line x1="8" y1="42" x2="42" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="login-logo-text">lupiya</div>
+          <div class="login-logo-sub">Engineering Dashboard</div>
+        </div>
+      </div>
     </div>
     <hr class="login-divider">
     <div class="login-title">Enter your password to continue</div>
@@ -648,8 +710,17 @@
 <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-text">⚡ Lupiya</div>
-    <div class="logo-sub">Engineering Dashboard</div>
+    <div style="display:flex;align-items:center;gap:0.7rem;padding-bottom:0.25rem;">
+      <svg viewBox="0 0 38 38" width="30" height="30" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <rect width="38" height="38" rx="9" fill="#68AB3E"/>
+        <path d="M0 25 L25 0 L38 0 L38 10 L10 38 L0 38 Z" fill="#1B3560" opacity="0.22"/>
+        <line x1="6" y1="30" x2="30" y2="8" stroke="rgba(255,255,255,0.38)" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="logo-text">lupiya</div>
+        <div class="logo-sub">Engineering</div>
+      </div>
+    </div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-label">Pages</div>
@@ -1004,6 +1075,32 @@ const PTS_MAP = {
   'QA / TestFlight / Review':2,'QA / review':2,'pending deployment':2,
   'In Progress':1,'To Do':0
 };
+const LB_RANK_KEY = 'lupiya_lb_ranks_v2';
+function saveLbRankings(sprintKey, rankedNames) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    if (store[sprintKey]?.curr) store[sprintKey].prev = store[sprintKey].curr;
+    if (!store[sprintKey]) store[sprintKey] = {};
+    store[sprintKey].curr = rankedNames;
+    localStorage.setItem(LB_RANK_KEY, JSON.stringify(store));
+  } catch(e) {}
+}
+function getLbRankChange(sprintKey, memberName, currentRank) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    const prev = store[sprintKey]?.prev;
+    if (!prev) return 0;
+    const prevRank = prev.indexOf(memberName);
+    if (prevRank === -1) return 0;
+    return prevRank - currentRank;
+  } catch(e) { return 0; }
+}
+function buildRankBadge(change) {
+  if (change > 0)  return `<span class="rank-badge rank-badge-up">▲ ${change}</span>`;
+  if (change < 0)  return `<span class="rank-badge rank-badge-down">▼ ${Math.abs(change)}</span>`;
+  return '';
+}
+
 // ── Hybrid scoring ─────────────────────────────────────────────────
 const HYBRID_VOLUME_WEIGHT     = 0.6;
 const HYBRID_EFFICIENCY_WEIGHT = 0.4;
