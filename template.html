@@ -8,10 +8,10 @@
   <style>
     /* ── Lupiya Design Tokens ── */
     :root {
-      --primary:        hsl(208,67%,30%);
+      --primary:        hsl(217,56%,24%); /* Lupiya Navy */
       --primary-light:  hsl(208,60%,40%);
       --primary-dark:   hsl(208,75%,22%);
-      --accent:         hsl(198,77%,52%);
+      --accent:         hsl(96,47%,46%); /* Lupiya Green */
       --success:        hsl(74,70%,36%);
       --success-light:  hsl(74,65%,95%);
       --warning:        hsl(43,76%,49%);
@@ -217,6 +217,11 @@
     .lb-pts    { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
     .lb-pts-lbl{ font-size: 0.6rem; color: var(--muted-fg); font-weight: 400; }
     .lb-tasks  { font-size: 0.7rem; color: var(--muted-fg); margin-top: 2px; }
+    .lb-hybrid { font-size: 1.3rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .lb-hybrid-lbl { font-size: 0.6rem; color: var(--muted-fg); font-weight: 400; }
+    .lb-meta-row { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    .lb-raw-pill { font-size: 0.62rem; background: hsl(215,25%,18%); color: hsl(215,40%,75%); padding: 1px 6px; border-radius: 99px; font-weight: 600; }
+    .lb-eff-pill { font-size: 0.62rem; background: hsl(96,40%,18%); color: hsl(96,60%,65%); padding: 1px 6px; border-radius: 99px; font-weight: 600; }
     .lb-bar-wrap{ display: flex; align-items: center; gap: 0.5rem; grid-column: 1/-1; margin-top: 4px; }
     .lb-bar-track{ flex:1; height:7px; background:var(--border); border-radius:99px; overflow:hidden; }
     .lb-bar-fill {
@@ -614,7 +619,60 @@
   }
   .login-error.show { display: block; }
 
-</style>
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lbSlideIn {
+      from { opacity: 0; transform: translateX(-14px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes kpiPop {
+      0%   { opacity: 0; transform: scale(0.88) translateY(8px); }
+      60%  { transform: scale(1.04) translateY(0); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes glowGreen {
+      0%   { box-shadow: 0 0 0 0 hsl(96,52%,52%,0.55); }
+      50%  { box-shadow: 0 0 0 10px hsl(96,52%,52%,0); }
+      100% { box-shadow: none; }
+    }
+    @keyframes glowRed {
+      0%   { box-shadow: 0 0 0 0 hsl(6,80%,56%,0.45); }
+      50%  { box-shadow: 0 0 0 10px hsl(6,80%,56%,0); }
+      100% { box-shadow: none; }
+    }
+    .kpi-card { animation: kpiPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .kpi-card:nth-child(1) { animation-delay:   0ms; }
+    .kpi-card:nth-child(2) { animation-delay:  75ms; }
+    .kpi-card:nth-child(3) { animation-delay: 150ms; }
+    .kpi-card:nth-child(4) { animation-delay: 225ms; }
+    .lb-row { animation: lbSlideIn 0.38s ease-out both; }
+    .lb-row:nth-child(1) { animation-delay:   0ms; }
+    .lb-row:nth-child(2) { animation-delay:  60ms; }
+    .lb-row:nth-child(3) { animation-delay: 120ms; }
+    .lb-row:nth-child(4) { animation-delay: 180ms; }
+    .lb-row:nth-child(5) { animation-delay: 240ms; }
+    .lb-row:nth-child(6) { animation-delay: 300ms; }
+    .lb-row:nth-child(7) { animation-delay: 360ms; }
+    .lb-row.moved-up   { animation: lbSlideIn 0.38s ease-out both, glowGreen 1.8s ease-out 0.42s; }
+    .lb-row.moved-down { animation: lbSlideIn 0.38s ease-out both, glowRed   1.8s ease-out 0.42s; }
+    .rank-badge {
+      display: inline-flex; align-items: center; gap: 2px;
+      font-size: 0.67rem; font-weight: 800; padding: 1px 7px;
+      border-radius: 99px; margin-left: 5px; letter-spacing: 0.01em; vertical-align: middle;
+    }
+    .rank-badge-up   { background: hsl(96,55%,91%);  color: hsl(96,55%,26%); }
+    .rank-badge-down { background: hsl(6,80%,93%);   color: hsl(6,80%,36%); }
+    .nav-item.active { background: hsl(217,52%,22%); }
+    #login-overlay { background: hsl(217,58%,12%); }
+    .login-card    { border-top: 3px solid var(--accent); }
+    .login-btn     { background: linear-gradient(135deg, var(--primary) 0%, hsl(217,50%,34%) 100%); }
+    .login-btn:hover:not(:disabled) { background: linear-gradient(135deg, hsl(217,50%,30%) 0%, hsl(217,45%,40%) 100%); }
+    .page { animation: fadeInUp 0.32s ease-out both; }
+
+  </style>
 </head>
 <body>
 
@@ -622,8 +680,17 @@
 <div id="login-overlay">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-text">⚡ Lupiya</div>
-      <div class="login-logo-sub">Engineering Dashboard</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+        <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="13" fill="#68AB3E"/>
+          <path d="M0 34 L34 0 L52 0 L52 14 L14 52 L0 52 Z" fill="#1B3560" opacity="0.2"/>
+          <line x1="8" y1="42" x2="42" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="login-logo-text">lupiya</div>
+          <div class="login-logo-sub">Engineering Dashboard</div>
+        </div>
+      </div>
     </div>
     <hr class="login-divider">
     <div class="login-title">Enter your password to continue</div>
@@ -643,8 +710,17 @@
 <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-text">⚡ Lupiya</div>
-    <div class="logo-sub">Engineering Dashboard</div>
+    <div style="display:flex;align-items:center;gap:0.7rem;padding-bottom:0.25rem;">
+      <svg viewBox="0 0 38 38" width="30" height="30" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <rect width="38" height="38" rx="9" fill="#68AB3E"/>
+        <path d="M0 25 L25 0 L38 0 L38 10 L10 38 L0 38 Z" fill="#1B3560" opacity="0.22"/>
+        <line x1="6" y1="30" x2="30" y2="8" stroke="rgba(255,255,255,0.38)" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="logo-text">lupiya</div>
+        <div class="logo-sub">Engineering</div>
+      </div>
+    </div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-label">Pages</div>
@@ -657,7 +733,11 @@
 
     <div class="nav-label" style="margin-top:1rem;">Point System</div>
     <div class="pts-legend">
-      ✅ Done = <strong style="color:hsl(120,60%,65%)">3 pts</strong><br>
+      <span style="font-size:0.75rem;color:#fff;font-weight:700;">⚡ Hybrid Score</span><br>
+      <span style="font-size:0.67rem;color:hsl(215,20%,60%);">(raw × 0.6) + (efficiency% × 0.4)</span><br><br>
+      <span style="font-size:0.68rem;color:hsl(215,15%,55%);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Raw Points</span><br>
+      ✅ Done = <strong style="color:hsl(120,60%,65%)">4 pts</strong><br>
+      🚀 Pending Deploy = <strong style="color:hsl(96,50%,65%)">3 pts</strong><br>
       🔬 QA / Review = <strong style="color:var(--accent)">2 pts</strong><br>
       🔄 In Progress = <strong style="color:hsl(43,80%,65%)">1 pt</strong><br>
       📥 To Do = <strong style="color:hsl(215,15%,55%)">0 pts</strong>
@@ -753,7 +833,7 @@
             <span class="section-badge" id="overviewLbBadge">—</span>
           </div>
           <div style="padding:0.4rem 1.25rem;background:var(--muted);border-bottom:1px solid var(--border);font-size:0.67rem;color:var(--muted-fg);display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
-            <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done=3pts</span>
+            <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done=4pts</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>QA=2pts</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>In Progress=1pt</span>
             <span class="legend-item"><span class="legend-dot" style="background:var(--border)"></span>To Do=0pts</span>
@@ -797,9 +877,9 @@
         <span class="page-section-badge" id="lbPageBadge">—</span>
       </div>
       <div class="pt-legend-bar">
-        <strong style="color:var(--fg)">Progress bar = tasks done ÷ total assigned</strong>
+        <strong style="color:var(--fg)">⚡ Score = (raw pts × 0.6) + (efficiency % × 0.4)</strong>
         &nbsp;·&nbsp;
-        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done = 3 pts</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done = 4 pts</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>QA/Review = 2 pts</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>In Progress = 1 pt</span>
         <span class="legend-item"><span class="legend-dot" style="background:var(--border)"></span>To Do = 0 pts</span>
@@ -991,10 +1071,51 @@ const ASGN  = {"712020:c4113b96-f9b6-470d-9728-d19f7a1c1be9": "Mojisola Kareem",
 const SPRTS = [{"name": "Sprint 50", "state": "closed", "id": 1603}, {"name": "Sprint 51", "state": "closed", "id": 1670}, {"name": "Sprint 52", "state": "closed", "id": 1711}, {"name": "Sprint 53", "state": "closed", "id": 1714}, {"name": "Sprint 54", "state": "closed", "id": 1750}, {"name": "Sprint 55", "state": "closed", "id": 1788}, {"name": "Sprint 56", "state": "closed", "id": 1824}, {"name": "Sprint 57", "state": "active", "id": 1861}, {"name": "Sprint 58", "state": "future", "id": 1903}];
 
 const PTS_MAP = {
-  'Done':3,'Done / Prod Deployed':3,
-  'QA / TestFlight / Review':2,'QA / review':2,'pending deployment':2,
+  'Done':4,'Done / Prod Deployed':4,
+  'QA / TestFlight / Review':2,'QA / review':2,'pending deployment':3,
   'In Progress':1,'To Do':0
 };
+const LB_RANK_KEY = 'lupiya_lb_ranks_v2';
+function saveLbRankings(sprintKey, rankedNames) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    if (store[sprintKey]?.curr) store[sprintKey].prev = store[sprintKey].curr;
+    if (!store[sprintKey]) store[sprintKey] = {};
+    store[sprintKey].curr = rankedNames;
+    localStorage.setItem(LB_RANK_KEY, JSON.stringify(store));
+  } catch(e) {}
+}
+function getLbRankChange(sprintKey, memberName, currentRank) {
+  try {
+    const store = JSON.parse(localStorage.getItem(LB_RANK_KEY) || '{}');
+    const prev = store[sprintKey]?.prev;
+    if (!prev) return 0;
+    const prevRank = prev.indexOf(memberName);
+    if (prevRank === -1) return 0;
+    return prevRank - currentRank;
+  } catch(e) { return 0; }
+}
+function buildRankBadge(change) {
+  if (change > 0)  return `<span class="rank-badge rank-badge-up">▲ ${change}</span>`;
+  if (change < 0)  return `<span class="rank-badge rank-badge-down">▼ ${Math.abs(change)}</span>`;
+  return '';
+}
+
+// ── Hybrid scoring ─────────────────────────────────────────────────
+const HYBRID_VOLUME_WEIGHT     = 0.6;
+const HYBRID_EFFICIENCY_WEIGHT = 0.4;
+const HYBRID_MAX_PTS_PER_TASK  = 4;
+
+function calcHybrid(rawPts, totalTasks) {
+  if (totalTasks === 0) return 0;
+  const efficiencyPct = (rawPts / (totalTasks * HYBRID_MAX_PTS_PER_TASK)) * 100;
+  return (rawPts * HYBRID_VOLUME_WEIGHT) + (efficiencyPct * HYBRID_EFFICIENCY_WEIGHT);
+}
+function calcEfficiency(rawPts, totalTasks) {
+  if (totalTasks === 0) return 0;
+  return (rawPts / (totalTasks * HYBRID_MAX_PTS_PER_TASK)) * 100;
+}
+
 const COLORS = [
   'hsl(208,67%,35%)','hsl(198,77%,45%)','hsl(74,60%,40%)',
   'hsl(43,76%,45%)','hsl(270,60%,50%)','hsl(6,80%,55%)',
@@ -1012,6 +1133,8 @@ let charts = {};
 
 // ─── Init ────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  // Recalculate points so scoring reflects current PTS_MAP on every load
+  RAW.forEach(r => { r.points = PTS_MAP[r.status] ?? 0; });
   // Sprint
   const ss = document.getElementById('sprintFilter');
   [...SPRTS].sort((a,b)=>a.id-b.id).forEach(s => {
@@ -1106,16 +1229,23 @@ function renderKPIs() {
   const pts  = filtered.reduce((s,r)=>s+r.points,0);
   const done = filtered.filter(r=>r.status==='Done'||r.status==='Done / Prod Deployed').length;
   const rev  = filtered.filter(r=>r.status.includes('QA')||r.status.includes('Review')||r.status==='pending deployment').length;
-  const byM  = {};
-  filtered.forEach(r=>{ byM[r.assignee_name]=(byM[r.assignee_name]||0)+r.points; });
-  const top  = Object.entries(byM).sort((a,b)=>b[1]-a[1])[0];
+  // Build per-member map for hybrid top-performer calculation
+  const byM = {};
+  filtered.forEach(r => {
+    if (!byM[r.assignee_name]) byM[r.assignee_name] = {pts:0, total:0};
+    byM[r.assignee_name].pts += r.points;
+    byM[r.assignee_name].total++;
+  });
+  const top = Object.entries(byM)
+    .map(([name, d]) => ({ name, hybrid: calcHybrid(d.pts, d.total), pts: d.pts }))
+    .sort((a,b) => b.hybrid - a.hybrid)[0];
   document.getElementById('kpiPts').textContent     = pts;
   document.getElementById('kpiPtsSub').textContent  = filtered.length+' tasks · '+Object.keys(byM).length+' members';
   document.getElementById('kpiDone').textContent    = done;
   document.getElementById('kpiDoneSub').textContent = done+' of '+filtered.length+' finished';
   document.getElementById('kpiReview').textContent  = rev;
-  document.getElementById('kpiTop').textContent     = top ? top[0].split(' ')[0] : '—';
-  document.getElementById('kpiTopPts').textContent  = top ? top[1]+' pts earned' : '';
+  document.getElementById('kpiTop').textContent     = top ? top.name.split(' ')[0] : '—';
+  document.getElementById('kpiTopPts').textContent  = top ? top.hybrid.toFixed(1)+' hybrid score' : '';
 }
 
 // ─── Overview mini charts + leaderboard ──────────────────────────────
@@ -1140,7 +1270,14 @@ function renderOverviewLeaderboard() {
     else if (r.status==='In Progress') m.prog++;
     else m.todo++;
   });
-  const ranked = Object.values(map).sort((a,b)=>b.pts-a.pts);
+  // Compute hybrid score for each member
+  Object.values(map).forEach(m => {
+    const total  = m.done + m.rev + m.prog + m.todo;
+    m.total      = total;
+    m.efficiency = calcEfficiency(m.pts, total);
+    m.hybrid     = calcHybrid(m.pts, total);
+  });
+  const ranked = Object.values(map).sort((a,b)=>b.hybrid-a.hybrid);
   const medals = ['🥇','🥈','🥉'];
   const grid = document.getElementById('overviewLbGrid');
   if (!grid) return;
@@ -1166,9 +1303,9 @@ function renderOverviewLeaderboard() {
         </div>
         <div style="margin-top:3px;display:flex;align-items:center;gap:0.4rem;">
           <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden;">
-            <div style="width:${pct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+            <div style="width:${m.efficiency.toFixed(0)}%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
           </div>
-          <span style="font-size:0.62rem;color:var(--muted-fg);white-space:nowrap">${m.done}/${total}</span>
+          <span style="font-size:0.62rem;color:var(--muted-fg);white-space:nowrap">${m.efficiency.toFixed(0)}% eff.</span>
         </div>
         <div style="margin-top:3px;display:flex;gap:3px;flex-wrap:wrap;">
           ${m.done ?`<span class="badge badge-done">${m.done} done</span>`   :''}
@@ -1178,8 +1315,8 @@ function renderOverviewLeaderboard() {
         </div>
       </div>
       <div style="text-align:right;padding-left:0.5rem;">
-        <div style="font-size:1.1rem;font-weight:800;color:var(--primary)">${m.pts}</div>
-        <div style="font-size:0.6rem;color:var(--muted-fg)">pts</div>
+        <div style="font-size:1.1rem;font-weight:800;color:var(--primary)">${m.hybrid.toFixed(1)}</div>
+        <div style="font-size:0.6rem;color:var(--muted-fg)">score</div>
       </div>`;
     grid.appendChild(row);
   });
@@ -1304,39 +1441,58 @@ function renderLeaderboard(gridId, badgeId) {
     else if (r.status==='In Progress') m.prog++;
     else m.todo++;
   });
-  const ranked = Object.values(map).sort((a,b)=>b.pts-a.pts);
+  // Compute hybrid score for each member
+  Object.values(map).forEach(m => {
+    const total  = m.done + m.rev + m.prog + m.todo;
+    m.total      = total;
+    m.efficiency = calcEfficiency(m.pts, total);
+    m.hybrid     = calcHybrid(m.pts, total);
+  });
+  const ranked = Object.values(map).sort((a,b)=>b.hybrid-a.hybrid);
   const medals = ['🥇','🥈','🥉'];
   const grid = document.getElementById(gridId);
   if (!grid) return;
   grid.innerHTML = '';
   if (!ranked.length) { grid.innerHTML='<div class="empty">No data for this selection.</div>'; return; }
+  saveLbRankings(sp, ranked.map(m=>m.name));
   ranked.forEach((m,i) => {
-    const total = m.done+m.rev+m.prog+m.todo;
-    const pct   = total > 0 ? Math.round(m.done/total*100) : 0;
-    const medal = i<3 ? medals[i] : `<span style="font-size:.85rem;color:var(--muted-fg);font-weight:800">#${i+1}</span>`;
+    const medal      = i<3 ? medals[i] : `<span style="font-size:.85rem;color:var(--muted-fg);font-weight:800">#${i+1}</span>`;
+    const rankChange = getLbRankChange(sp, m.name, i);
+    const rankBadge  = buildRankBadge(rankChange);
     const row = document.createElement('div');
-    row.className = 'lb-row' + (i<3?' rank-'+(i+1):'');
+    let rowClass = 'lb-row' + (i<3?' rank-'+(i+1):'');
+    if (rankChange > 0) rowClass += ' moved-up';
+    else if (rankChange < 0) rowClass += ' moved-down';
+    row.className = rowClass;
     row.style.cursor = 'pointer';
     row.title = 'Click to view ' + m.name + "'s tasks by project";
     row.addEventListener('click', ()=>openDrawer(m.name));
     row.innerHTML = `
       <div class="lb-rank">${medal}</div>
       <div>
-        <div class="lb-name" style="display:flex;align-items:center;gap:0.4rem;">
-          ${m.name}<span style="font-size:0.65rem;color:var(--accent);font-weight:500">↗ view tasks</span>
+        <div class="lb-name" style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+          ${m.name}${rankBadge}<span style="font-size:0.65rem;color:var(--accent);font-weight:500;margin-left:2px">↗ view tasks</span>
         </div>
         <div class="lb-badges">
-          ${m.done ?`<span class="badge badge-done">${m.done} done</span>`:''}          ${m.rev  ?`<span class="badge badge-review">${m.rev} in review</span>`:''}          ${m.prog ?`<span class="badge badge-progress">${m.prog} in progress</span>`:''}          ${m.todo ?`<span class="badge badge-todo">${m.todo} to do</span>`:''}        </div>
+          ${m.done ?`<span class="badge badge-done">${m.done} done</span>`:''}
+          ${m.rev  ?`<span class="badge badge-review">${m.rev} in review</span>`:''}
+          ${m.prog ?`<span class="badge badge-progress">${m.prog} in progress</span>`:''}
+          ${m.todo ?`<span class="badge badge-todo">${m.todo} to do</span>`:''}
+        </div>
       </div>
       <div class="lb-right">
-        <div class="lb-pts">${m.pts}<span class="lb-pts-lbl"> pts</span></div>
-        <div class="lb-tasks">${total} tasks assigned</div>
+        <div class="lb-hybrid">${m.hybrid.toFixed(1)}<span class="lb-hybrid-lbl"> score</span></div>
+        <div class="lb-meta-row">
+          <span class="lb-raw-pill">${m.pts} raw pts</span>
+          <span class="lb-eff-pill">${m.efficiency.toFixed(0)}% eff.</span>
+        </div>
+        <div class="lb-tasks">${m.total} tasks assigned</div>
       </div>
       <div class="lb-bar-wrap">
         <div class="lb-bar-track">
-          <div class="lb-bar-fill" style="width:${pct}%"></div>
+          <div class="lb-bar-fill" style="width:${m.efficiency.toFixed(0)}%"></div>
         </div>
-        <span class="lb-bar-label">${m.done} / ${total} done (${pct}%)</span>
+        <span class="lb-bar-label">Efficiency: ${m.efficiency.toFixed(0)}%</span>
       </div>`;
     grid.appendChild(row);
   });
