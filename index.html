@@ -747,7 +747,7 @@
     <div class="nav-label" style="margin-top:1rem;">Point System</div>
     <div class="pts-legend">
       <span style="font-size:0.75rem;color:#fff;font-weight:700;">⚡ Hybrid Score</span><br>
-      <span style="font-size:0.67rem;color:hsl(215,20%,60%);">(raw × 0.6) + (efficiency% × 0.4)</span><br><br>
+      <span style="font-size:0.67rem;color:hsl(215,20%,60%);">(raw × 0.3) + (efficiency% × 0.7)</span><br><br>
       <span style="font-size:0.68rem;color:hsl(215,15%,55%);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Raw Points</span><br>
       ✅ Done = <strong style="color:hsl(120,60%,65%)">4 pts</strong><br>
       🚀 Pending Deploy = <strong style="color:hsl(96,50%,65%)">3 pts</strong><br>
@@ -890,7 +890,7 @@
         <span class="page-section-badge" id="lbPageBadge">—</span>
       </div>
       <div class="pt-legend-bar">
-        <strong style="color:var(--fg)">⚡ Score = (raw pts × 0.6) + (efficiency % × 0.4)</strong>
+        <strong style="color:var(--fg)">⚡ Score = (raw pts × 0.3) + (efficiency % × 0.7)</strong>
         &nbsp;·&nbsp;
         <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Done = 4 pts</span>
         <span class="legend-item"><span class="legend-dot" style="background:hsl(96,52%,52%)"></span>Pending Deploy = 3 pts</span>
@@ -1090,8 +1090,8 @@ const PTS_MAP = {
   'In Progress':1,'To Do':0
 };
 // ── Hybrid scoring constants ────────────────────────────────────────
-const HYBRID_VOLUME_WEIGHT     = 0.6;
-const HYBRID_EFFICIENCY_WEIGHT = 0.4;
+const HYBRID_VOLUME_WEIGHT     = 0.3;
+const HYBRID_EFFICIENCY_WEIGHT = 0.7;
 const HYBRID_MAX_PTS_PER_TASK  = 4;
 
 function calcHybrid(rawPts, totalTasks) {
